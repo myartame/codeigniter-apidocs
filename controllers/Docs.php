@@ -3,11 +3,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Docs extends CI_Controller{
-	const CONTROLLER_DIR = './application/controllers';
+	private $CONTROLLER_DIR;
 
 	public function __construct(){
 		parent::__construct();
-
+		$this->CONTROLLER_DIR = APPPATH.'controllers';
 		$this->load->helper('url');
 	}
 
@@ -33,7 +33,7 @@ class Docs extends CI_Controller{
 	private function _get_controller_source($file_name){
 		$controller_line = '';
 		// Get your source in Controller (all contents)
-		if ($fp = fopen(self::CONTROLLER_DIR . '/' . $file_name . '.php', "r")){
+		if ($fp = fopen($this->CONTROLLER_DIR . '/' . $file_name . '.php', "r")){
 			
 	    	while (!feof($fp)) {
 	    	   $controller_line .= fgets($fp);
@@ -47,7 +47,7 @@ class Docs extends CI_Controller{
 		$controller_arr = array();
 
 		/* Open your_project/application/controllers directory */
-		if ($handle = opendir(self::CONTROLLER_DIR)) {
+		if ($handle = opendir($this->CONTROLLER_DIR)) {
 			while (false !== ($entry = readdir($handle))) {
 				if ($entry != "." && $entry != ".." && strpos($entry, ".php") && !preg_match('/^(?:docs.php)$/i', $entry) && 
 					!preg_match('/^(?:welcome.php)$/i', $entry)) {
